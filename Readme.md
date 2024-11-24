@@ -26,11 +26,15 @@ Voiceline is a live app that allows you to leave voice messages for other people
 
 ## Usage
 
-1. Start the application:
+1. Start the application/client:
     ```bash
     npm start
     ```
-2. Open the app and start sending voice messages to your friends!
+    To start the server:
+   ```bash
+   npm run signaling
+   ```
+3. Open the app and start sending voice messages to your friends!
 
 ## Contributing
 
