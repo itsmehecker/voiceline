@@ -5,59 +5,9 @@
 </head>
 <body>
   <h1>WebRTC Live Calling App</h1>
+  <div id="client-count">Connected clients: 0</div>
   <video id="localVideo" autoplay playsinline></video>
   <video id="remoteVideo" autoplay playsinline></video>
-  <script>
-    const localVideo = document.getElementById('localVideo');
-    const remoteVideo = document.getElementById('remoteVideo');
-    const peerConnection = new RTCPeerConnection();
-    const ws = new WebSocket('wss://your-deployed-server-url');
-
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then(stream => {
-        localVideo.srcObject = stream;
-        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
-      });
-
-    peerConnection.ontrack = event => {
-      remoteVideo.srcObject = event.streams[0];
-    };
-
-    ws.onmessage = async (message) => {
-      const data = JSON.parse(message.data);
-      if (data.offer) {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-        ws.send(JSON.stringify({ answer }));
-      } else if (data.answer) {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-      } else if (data.candidate) {
-        await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
-      }
-    };
-
-    peerConnection.onicecandidate = event => {
-      if (event.candidate) {
-        ws.send(JSON.stringify({ candidate: event.candidate }));
-      }
-    };
-
-    async function call() {
-      const offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
-      ws.send(JSON.stringify({ offer }));
-    }
-
-    call();
-
-    ws.onopen = () => {
-      console.log('Connected to signaling server');
-    };
-
-    ws.onclose = () => {
-      console.log('Disconnected from signaling server');
-    };
-  </script>
+  <script src="client.js"></script>
 </body>
 </html>
