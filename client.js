@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://localhost:3000');
+const socket = new WebSocket('wss://voiceline.herokuapp.com');
 
 socket.onopen = () => {
   console.log("Connected to signaling server");
@@ -88,6 +88,15 @@ async function call() {
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
   sendOffer(offer);
+}
+
+document.getElementById('connectButton').addEventListener('click', () => {
+  startCall();
+});
+
+function startCall() {
+  console.log('Connecting...');
+  call();
 }
 
 call();
