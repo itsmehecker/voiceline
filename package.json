@@ -1,14 +1,12 @@
 {
-  "name": "voice-transmission-app",
+  "name": "voiceline",
   "version": "1.0.0",
-  "description": "A web application for live transmission of voice using WebRTC.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "ws": "^8.0.0"
-  },
-  "author": "",
-  "license": "ISC"
+    "express": "^4.17.1",
+    "ws": "^7.4.6"
+  }
 }

@@ -1,60 +1,38 @@
-const WebSocket = require('ws');
+// ...existing code...
+const http = require('http');
 
-const wss = new WebSocket.Server({ port: 8080 });
+app.use(express.json());
 
-wss.on('connection', ws => {
-  console.log("Client connected");
-  updateClientCount();
-
-  ws.on('message', message => {
-    let data;
-    try {
-      data = JSON.parse(message);
-    } catch (error) {
-      console.error("Error parsing JSON:", error);
-      return;
-    }
-    console.log("Received message:", data);
-    switch (data.type) {
-      case 'offer':
-        broadcast(data, ws);
-        break;
-      case 'answer':
-        broadcast(data, ws);
-        break;
-      case 'candidate':
-        broadcast(data, ws);
-        break;
+app.post('/signal', (req, res) => {
+  const message = req.body;
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(message));
     }
   });
-
-  ws.on('close', () => {
-    console.log("Client disconnected");
-    updateClientCount();
+  res.sendStatus(200);
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
   });
 });
 
-function broadcast(data, sender) {
-  wss.clients.forEach(client => {
-    if (client !== sender && client.readyState === WebSocket.OPEN) {
-      console.log("Broadcasting message:", data);
-      client.send(JSON.stringify(data));
-    }
-  });
-}
+server.listen(3000, () => {
+  console.log('Server is listening on port 3000');
+});
 
-function updateClientCount() {
-  const clientCount = Array.from(wss.clients).filter(client => client.readyState === WebSocket.OPEN).length;
-  console.log(`Connected clients: ${clientCount}`);
-  broadcastClientCount(clientCount);
-}
+});
 
-function broadcastClientCount(count) {
-  const message = JSON.stringify({ type: 'clientCount', count });
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      console.log("Broadcasting client count:", count);
-      client.send(message);
-    }
-  });
-}
+// ...existing code...
+
+const WebSocket = require('ws');
+
+
+    // Broadcast the message to all clients
+    wss.clients.forEach((client) => {
+wss.on('connection', (ws) => {
+  ws.on('message', (message) => {
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
