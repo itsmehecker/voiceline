@@ -1,5 +1,3 @@
-// ...existing code...
-
 const servers = {
   iceServers: [
     {
@@ -13,6 +11,11 @@ let peerConnection;
 
 async function startWebRTC() {
   console.log("Starting WebRTC...");
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    console.error("navigator.mediaDevices is not supported");
+    alert("Your browser does not support WebRTC. Please use a different browser.");
+    return;
+  }
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
   console.log("Local stream obtained");
   peerConnection = new RTCPeerConnection(servers);
@@ -35,7 +38,6 @@ async function startWebRTC() {
     peerConnection.addTrack(track, localStream);
   });
 
-  // Create an offer and set local description
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
   console.log("Sending offer");
@@ -43,7 +45,6 @@ async function startWebRTC() {
   sendOffer(offer);
 }
 
-// Function to handle incoming offer
 async function handleOffer(offer) {
   console.log("Received offer");
   peerConnection = new RTCPeerConnection(servers);
@@ -77,16 +78,12 @@ async function handleOffer(offer) {
   sendAnswer(answer);
 }
 
-// Function to handle incoming answer
 async function handleAnswer(answer) {
   console.log("Received answer");
   await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
 }
 
-// Function to handle incoming ICE candidate
 async function handleCandidate(candidate) {
   console.log("Received ICE candidate");
   await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
 }
-
-// ...existing code...

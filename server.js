@@ -7,7 +7,13 @@ wss.on('connection', ws => {
   updateClientCount();
 
   ws.on('message', message => {
-    const data = JSON.parse(message);
+    let data;
+    try {
+      data = JSON.parse(message);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      return;
+    }
     console.log("Received message:", data);
     switch (data.type) {
       case 'offer':

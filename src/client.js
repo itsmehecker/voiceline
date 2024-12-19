@@ -5,7 +5,13 @@ socket.onopen = () => {
 };
 
 socket.onmessage = async event => {
-  const data = JSON.parse(event.data);
+  let data;
+  try {
+    data = JSON.parse(event.data);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return;
+  }
   console.log("Received message:", data);
   switch (data.type) {
     case 'offer':
