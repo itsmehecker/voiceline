@@ -4,7 +4,7 @@
     "description": "Voiceline is a live app that allows you to leave voice messages for other people, similar to a walkie-talkie, but with a focus on aesthetics.",
     "main": "app.js",
     "scripts": {
-      "start": "live-server --port=3000",
+      "start": "live-server --config=live-server.json",
       "signaling": "node signaling.js"
     },
     "dependencies": {
