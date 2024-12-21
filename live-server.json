@@ -1,7 +1,0 @@
-{
-  "port": 443,
-  "https": {
-    "cert": "path/to/cert.pem",
-    "key": "path/to/key.pem"
-  }
-}
