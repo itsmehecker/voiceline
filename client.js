@@ -5,6 +5,10 @@ socket.onopen = () => {
   console.log("Connected to signaling server");
 };
 
+socket.onerror = (error) => {
+  console.error("WebSocket error:", error);
+};
+
 socket.onmessage = async event => {
   const data = JSON.parse(event.data);
   console.log("Received message:", data);
@@ -25,11 +29,19 @@ socket.onmessage = async event => {
 };
 
 async function sendOffer(offer) {
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.error("Socket is not open. Cannot send offer.");
+    return;
+  }
   console.log("Sending offer");
   socket.send(JSON.stringify({ type: 'offer', offer }));
 }
 
 async function sendAnswer(answer) {
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.error("Socket is not open. Cannot send answer.");
+    return;
+  }
   console.log("Sending answer");
   socket.send(JSON.stringify({ type: 'answer', answer }));
 }
@@ -46,3 +58,11 @@ function updateClientCount(count) {
   console.log("Updating client count:", count);
   document.getElementById('client-count').innerText = `Connected clients: ${count}`;
 }
+
+// Ensure sendCandidate is defined after socket initialization
+peerConnection.onicecandidate = event => {
+  if (event.candidate) {
+    console.log("Sending ICE candidate");
+    sendCandidate(event.candidate);
+  }
+};
