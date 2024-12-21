@@ -1,4 +1,5 @@
-const socket = new WebSocket('ws://localhost:8080');
+const socketUrl = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const socket = new WebSocket(`${socketUrl}129.159.23.70:8080`);
 
 socket.onopen = () => {
   console.log("Connected to signaling server");
@@ -34,7 +35,10 @@ async function sendAnswer(answer) {
 }
 
 async function sendCandidate(candidate) {
-  console.log("Sending candidate");
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.error("Socket is not open. Cannot send candidate.");
+    return;
+  }
   socket.send(JSON.stringify({ type: 'candidate', candidate }));
 }
 
