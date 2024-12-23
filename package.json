@@ -1,19 +1,15 @@
 {
-    "name": "voiceline",
-    "version": "1.0.0",
-    "description": "Voiceline is a live app that allows you to leave voice messages for other people, similar to a walkie-talkie, but with a focus on aesthetics.",
-    "main": "app.js",
-    "scripts": {
-      "start": "live-server --port=3000",
-      "signaling": "node signaling.js"
-    },
-    "dependencies": {
-      "ws": "^7.5.10"
-    },
-    "devDependencies": {
-      "live-server": "^1.2.2"
-    },
-    "author": "",
-    "license": "MIT",
-    "keywords": []
-  }
+  "name": "voiceline-working",
+  "version": "1.0.0",
+  "description": "A WebRTC live voice transmission app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ws": "^7.4.6"
+  },
+  "author": "",
+  "license": "ISC"
+}
