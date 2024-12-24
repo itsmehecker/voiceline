@@ -1,22 +1,40 @@
 const express = require('express');
 const http = require('http');
-const WebSocket = require('ws');
+const socketIo = require('socket.io');
+
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const io = socketIo(server);
 
 app.use(express.static('public'));
 
-wss.on('connection', (ws) => {
-  ws.on('message', (message) => {
-    wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    
+    socket.on('join', (room) => {
+        socket.join(room);
+        socket.room = room;
+        console.log(`User joined room: ${room}`);
     });
-  });
+
+    socket.on('offer', (data) => {
+        socket.to(data.room).emit('offer', { offer: data.offer, from: socket.id });
+    });
+
+    socket.on('answer', (data) => {
+        socket.to(data.room).emit('answer', { answer: data.answer, from: socket.id });
+    });
+
+    socket.on('candidate', (data) => {
+        socket.to(data.room).emit('candidate', { candidate: data.candidate, from: socket.id });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
 
-server.listen(8080, () => {
-  console.log('Server is listening on port 3000');
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

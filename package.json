@@ -1,16 +1,18 @@
 {
-    "name": "voiceline-working",
-    "version": "1.0.0",
-    "description": "A WebRTC live voice transmission app",
-    "main": "server.js",
-    "scripts": {
-      "start": "node server.js"
-    },
-    "dependencies": {
-      "express": "^4.17.1",
-      "ws": "^7.4.6"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "voiceline",
+  "version": "1.0.0",
+  "description": "Live voice and video WebRTC app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js && npx parcel watch public/index.html"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.13.3"
   }
-  
+}
