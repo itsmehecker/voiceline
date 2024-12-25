@@ -12,7 +12,7 @@ VoiceLine is a live voice and video WebRTC app that allows users to join rooms a
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/voiceline.git
+    git clone https://github.com/itsmehecker/voiceline.git
     cd voiceline
     ```
 
